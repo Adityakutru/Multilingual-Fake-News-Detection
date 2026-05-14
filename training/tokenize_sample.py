@@ -12,16 +12,20 @@ India won the match.
 ভারত ম্যাচ জিতেছে।
 """
 
-# Tokenize text
+# Tokenize sample text
 encoding = tokenizer(
     sample_text,
+
     padding="max_length",
+
     truncation=True,
+
     max_length=32,
+
     return_tensors="pt"
 )
 
-# Show token IDs
+# Show input IDs
 print("Input IDs:")
 print(encoding["input_ids"])
 
@@ -33,7 +37,7 @@ print(encoding["attention_mask"])
 
 print("\n")
 
-# Convert token IDs back to tokens
+# Convert token IDs back into readable tokens
 tokens = tokenizer.convert_ids_to_tokens(
     encoding["input_ids"][0]
 )
