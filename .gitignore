@@ -1,0 +1,26 @@
+# Python
+__pycache__/
+*.pyc
+
+# Virtual environments
+venv/
+.env/
+
+# Large datasets
+Datasets/raw/
+Datasets/final/
+Datasets/cleaned/
+Datasets/splits/
+
+# Outputs
+outputs/checkpoints/
+outputs/logs/
+outputs/results/
+outputs/graphs/
+
+# VS Code
+.vscode/
+
+# System files
+.DS_Store
+Thumbs.db
