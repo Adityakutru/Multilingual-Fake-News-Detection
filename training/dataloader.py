@@ -9,27 +9,36 @@ from transformers import AutoTokenizer
 from torch.utils.data import DataLoader
 
 
-# Load tokenizer
-tokenizer = AutoTokenizer.from_pretrained(
-    "bert-base-multilingual-cased"
-)
-
-
 class FakeNewsDataset(Dataset):
 
     def __init__(self, csv_file, max_length=128):
 
+        print("Dataloader Step 1")
+
         # Load CSV
         self.df = pd.read_csv(csv_file)
 
+        print("Dataloader Step 2")
+
         # Store max length
         self.max_length = max_length
+
+        print("Dataloader Step 3")
+
+        # Load tokenizer
+        self.tokenizer = AutoTokenizer.from_pretrained(
+            "bert-base-multilingual-cased"
+        )
+
+        print("Dataloader Step 4")
 
         # Convert labels into numbers
         self.label_map = {
             "fake": 0,
             "real": 1
         }
+
+        print("Dataloader Step 5")
 
     def __len__(self):
 
@@ -49,7 +58,7 @@ class FakeNewsDataset(Dataset):
         label = self.label_map[label]
 
         # Tokenize text
-        encoding = tokenizer(
+        encoding = self.tokenizer(
 
             text,
 
@@ -73,33 +82,3 @@ class FakeNewsDataset(Dataset):
             "label":
             torch.tensor(label, dtype=torch.long)
         }
-
-
-# Testing dataset loading
-# Testing DataLoader
-if __name__ == "__main__":
-
-    train_dataset = FakeNewsDataset(
-        "Datasets/splits/train.csv"
-    )
-
-    train_loader = DataLoader(
-
-        train_dataset,
-
-        batch_size=8,
-
-        shuffle=True
-    )
-
-    # Get first batch
-    batch = next(iter(train_loader))
-
-    print("Input IDs Shape:")
-    print(batch["input_ids"].shape)
-
-    print("\nAttention Mask Shape:")
-    print(batch["attention_mask"].shape)
-
-    print("\nLabels Shape:")
-    print(batch["label"].shape)
