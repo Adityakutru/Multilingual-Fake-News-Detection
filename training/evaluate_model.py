@@ -1,3 +1,9 @@
+import os
+
+os.environ["OMP_NUM_THREADS"] = "1"
+
+os.environ["MKL_NUM_THREADS"] = "1"
+
 import pandas as pd
 
 import torch
@@ -30,7 +36,8 @@ print(device)
 
 # Load tokenizer
 tokenizer = AutoTokenizer.from_pretrained(
-    "bert-base-multilingual-cased"
+    "bert-base-multilingual-cased",
+    use_fast=False
 )
 
 

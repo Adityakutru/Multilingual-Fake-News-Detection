@@ -18,7 +18,7 @@ from tqdm import tqdm
 
 from training.dataloader import FakeNewsDataset
 
-from models.mbert_bilstm import MBERT_BiLSTM
+from models.mbert_baseline import MBERT_Baseline
 
 from models.focal_loss import FocalLoss
 
@@ -86,7 +86,7 @@ validation_loader = DataLoader(
 
 
 # Initialize model
-model = MBERT_BiLSTM()
+model = MBERT_Baseline()
 
 model = model.to(device)
 
@@ -105,7 +105,7 @@ optimizer = AdamW(
 
 
 # Number of epochs
-epochs = 3
+epochs = 1
 
 
 # Metric containers
@@ -270,7 +270,7 @@ for epoch in range(epochs):
 
         model.state_dict(),
 
-        "outputs/checkpoints/mbert_bilstm_best.pth"
+        "outputs/checkpoints/mbert_baseline.pth"
     )
 
     print("Model saved successfully!")

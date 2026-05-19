@@ -20,7 +20,7 @@ from training.dataloader import FakeNewsDataset
 
 from models.mbert_bilstm import MBERT_BiLSTM
 
-from models.focal_loss import FocalLoss
+import torch.nn as nn
 
 
 # Device configuration
@@ -92,7 +92,7 @@ model = model.to(device)
 
 
 # Loss function
-criterion = FocalLoss()
+criterion = nn.CrossEntropyLoss()
 
 
 # Optimizer
@@ -105,7 +105,7 @@ optimizer = AdamW(
 
 
 # Number of epochs
-epochs = 3
+epochs = 1
 
 
 # Metric containers
@@ -270,7 +270,7 @@ for epoch in range(epochs):
 
         model.state_dict(),
 
-        "outputs/checkpoints/mbert_bilstm_best.pth"
+        "outputs/checkpoints/mbert_crossentropy.pth"
     )
 
     print("Model saved successfully!")

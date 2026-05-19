@@ -4,41 +4,45 @@ import torch
 
 from torch.utils.data import Dataset
 
-from transformers import AutoTokenizer
-
-from torch.utils.data import DataLoader
-
 
 class FakeNewsDataset(Dataset):
 
-    def __init__(self, csv_file, max_length=128):
+    def __init__(
 
-        print("Dataloader Step 1")
+        self,
 
-        # Load CSV
-        self.df = pd.read_csv(csv_file)
+        csv_file,
 
-        print("Dataloader Step 2")
+        tokenizer,
 
-        # Store max length
-        self.max_length = max_length
+        max_length=128
+    ):
 
-        print("Dataloader Step 3")
+        print(f"Loading CSV: {csv_file}")
 
-        # Load tokenizer
-        self.tokenizer = AutoTokenizer.from_pretrained(
-            "bert-base-multilingual-cased"
+        self.df = pd.read_csv(
+
+            csv_file,
+
+            engine="python",
+
+            encoding="utf-8",
+
+            on_bad_lines="skip"
         )
 
-        print("Dataloader Step 4")
+        print("CSV Loaded")
 
-        # Convert labels into numbers
+        self.tokenizer = tokenizer
+
+        self.max_length = max_length
+
         self.label_map = {
+
             "fake": 0,
+
             "real": 1
         }
-
-        print("Dataloader Step 5")
 
     def __len__(self):
 
@@ -46,18 +50,14 @@ class FakeNewsDataset(Dataset):
 
     def __getitem__(self, idx):
 
-        # Get article text
         text = str(
             self.df.iloc[idx]["text"]
         )
 
-        # Get label
         label = self.df.iloc[idx]["label"]
 
-        # Convert label to number
         label = self.label_map[label]
 
-        # Tokenize text
         encoding = self.tokenizer(
 
             text,
@@ -80,5 +80,8 @@ class FakeNewsDataset(Dataset):
             encoding["attention_mask"].squeeze(0),
 
             "label":
-            torch.tensor(label, dtype=torch.long)
+            torch.tensor(
+                label,
+                dtype=torch.long
+            )
         }
